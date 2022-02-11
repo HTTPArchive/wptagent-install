@@ -60,8 +60,10 @@ done
 #**************************************************************************************************
 # Custom metrics
 #**************************************************************************************************
+git clone https://github.com/HTTPArchive/custom-metrics.git
 mkdir ~/wptagent/custom
-git clone https://github.com/HTTPArchive/custom-metrics.git ~/wptagent/custom/metrics
+mkdir ~/wptagent/custom/metrics
+cp ~/custom-metrics/dist/*.js ~/wptagent/custom/metrics/
 
 #**************************************************************************************************
 # OS Packages
@@ -235,8 +237,14 @@ echo 'Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile /
 echo 'for i in `seq 1 24`' >> ~/agent.sh
 echo 'do' >> ~/agent.sh
 
-echo "    cd ~/wptagent/custom/metrics" >> ~/agent.sh
+# Update the custom metrics
+echo "    cd ~/custom-metrics" >> ~/agent.sh
 echo "    git pull origin main" >> ~/agent.sh
+echo "    rm -rf ~/wptagent/custom/metrics" >> ~/agent.sh
+echo "    mkdir ~/wptagent/custom/metrics" >> ~/agent.sh
+echo "    cp ~/custom-metrics/dist/*.js ~/wptagent/custom/metrics/" >> ~/agent.sh
+
+# Update the agent
 echo "    cd ~/wptagent" >> ~/agent.sh
 echo "    git pull origin haprod" >> ~/agent.sh
 
