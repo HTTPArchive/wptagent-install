@@ -246,7 +246,7 @@ echo "    cp ~/custom-metrics/dist/*.js ~/wptagent/custom/metrics/" >> ~/agent.s
 
 # Update the agent
 echo "    cd ~/wptagent" >> ~/agent.sh
-echo "    git pull origin haprod" >> ~/agent.sh
+echo "    git pull --rebase origin haprod" >> ~/agent.sh
 
 # Agent invocation
 echo "    python3 wptagent.py -vvvv --server \"https://webpagetest.httparchive.org/work/\" --location \"California,California2\" $KEY_OPTION --exit 60 --alive /tmp/wptagent" >> ~/agent.sh
