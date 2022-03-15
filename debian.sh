@@ -249,7 +249,7 @@ echo "    cd ~/wptagent" >> ~/agent.sh
 echo "    git pull --rebase origin haprod" >> ~/agent.sh
 
 # Agent invocation
-echo "    python3 wptagent.py -vvvv --server \"https://webpagetest.httparchive.org/work/\" --location \"California,California2\" $KEY_OPTION --exit 60 --alive /tmp/wptagent" >> ~/agent.sh
+echo "    python3 wptagent.py -vvvv --server \"https://webpagetest.httparchive.org/work/\" --location \"California,California2\" $KEY_OPTION --har --exit 60 --alive /tmp/wptagent" >> ~/agent.sh
 
 echo '    echo "Exited, restarting"' >> ~/agent.sh
 echo '    sleep 10' >> ~/agent.sh
