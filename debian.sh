@@ -99,7 +99,7 @@ sudo npm update -g
 # Python Modules
 #**************************************************************************************************
 until sudo pip3 install dnspython monotonic pillow psutil requests tornado wsaccel brotli fonttools selenium future usbmuxwrapper \
-        google-api-core google-cloud-pubsub google-cloud-storage google-cloud-monitoring
+        google-api-core google-cloud-pubsub google-cloud-storage
 do
     sleep 1
 done
