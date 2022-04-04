@@ -66,13 +66,6 @@ mkdir ~/wptagent/custom/metrics
 cp ~/custom-metrics/dist/*.js ~/wptagent/custom/metrics/
 
 #**************************************************************************************************
-# Test templates
-#**************************************************************************************************
-git clone https://github.com/HTTPArchive/test-templates.git
-mkdir ~/wptagent/custom/test-templates
-cp ~/test-templates/*.json ~/wptagent/custom/test-templates/
-
-#**************************************************************************************************
 # OS Packages
 #**************************************************************************************************
 
@@ -106,7 +99,7 @@ sudo npm update -g
 # Python Modules
 #**************************************************************************************************
 until sudo pip3 install dnspython monotonic pillow psutil requests tornado wsaccel brotli fonttools selenium future usbmuxwrapper \
-        google-api-core google-cloud-pubsub google-cloud-storage
+        google-api-core google-cloud-pubsub google-cloud-storage google-cloud-monitoring
 do
     sleep 1
 done
@@ -252,19 +245,12 @@ echo "    rm -rf ~/wptagent/custom/metrics" >> ~/agent.sh
 echo "    mkdir ~/wptagent/custom/metrics" >> ~/agent.sh
 echo "    cp ~/custom-metrics/dist/*.js ~/wptagent/custom/metrics/" >> ~/agent.sh
 
-# Update the test templates
-echo "    cd ~/test-templates" >> ~/agent.sh
-echo "    git pull origin main" >> ~/agent.sh
-echo "    rm -rf ~/wptagent/custom/test-templates" >> ~/agent.sh
-echo "    mkdir ~/wptagent/custom/test-templates" >> ~/agent.sh
-echo "    cp ~/test-templates/*.json ~/wptagent/custom/test-templates/" >> ~/agent.sh
-
 # Update the agent
 echo "    cd ~/wptagent" >> ~/agent.sh
 echo "    git pull --rebase origin haprod" >> ~/agent.sh
 
 # Agent invocation
-echo "    python3 wptagent.py -vvvv --server \"http://webpagetest.httparchive.org/work/\" --location \"California,California2\" $KEY_OPTION --har --exit 60 --alive /tmp/wptagent" >> ~/agent.sh
+echo "    python3 wptagent.py -vvvv --server \"http://webpagetest.httparchive.org/work/\" --location \"California,California2\" $KEY_OPTION --pubsub \"projects/httparchive/subscriptions/crawl-queue\" --exit 60 --alive /tmp/wptagent" >> ~/agent.sh
 
 echo '    echo "Exited, restarting"' >> ~/agent.sh
 echo '    sleep 10' >> ~/agent.sh
