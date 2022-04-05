@@ -13,7 +13,6 @@
 #**************************************************************************************************
 
 set -eu
-: ${WPT_KEY:=''}
 
 #**************************************************************************************************
 # Prompt for options
@@ -200,10 +199,6 @@ chmod +x ~/firstrun.sh
 #**************************************************************************************************
 
 # build the agent script
-KEY_OPTION=''
-if [ $WPT_KEY != '' ]; then
-  KEY_OPTION="--key $WPT_KEY"
-fi
 echo '#!/bin/sh' > ~/agent.sh
 
 echo 'export DEBIAN_FRONTEND=noninteractive' >> ~/agent.sh
@@ -250,7 +245,7 @@ echo "    cd ~/wptagent" >> ~/agent.sh
 echo "    git pull --rebase origin haprod" >> ~/agent.sh
 
 # Agent invocation
-echo "    python3 wptagent.py -vvvv --server \"http://webpagetest.httparchive.org/work/\" --location \"California,California2\" $KEY_OPTION --pubsub \"projects/httparchive/subscriptions/crawl-queue\" --exit 60 --alive /tmp/wptagent" >> ~/agent.sh
+echo '    python3 wptagent.py -vvvv --pubsub "projects/httparchive/subscriptions/crawl-queue" --exit 60 --alive /tmp/wptagent' >> ~/agent.sh
 
 echo '    echo "Exited, restarting"' >> ~/agent.sh
 echo '    sleep 10' >> ~/agent.sh
