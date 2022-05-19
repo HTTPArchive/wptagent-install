@@ -62,7 +62,9 @@ done
 git clone https://github.com/HTTPArchive/custom-metrics.git
 mkdir ~/wptagent/custom
 mkdir ~/wptagent/custom/metrics
+mkdir ~/wptagent/custom/inject
 cp ~/custom-metrics/dist/*.js ~/wptagent/custom/metrics/
+cp ~/custom-metrics/inject-dist/*.js ~/wptagent/custom/inject/
 
 #**************************************************************************************************
 # OS Packages
@@ -249,6 +251,9 @@ echo "    git pull origin main" >> ~/agent.sh
 echo "    rm -rf ~/wptagent/custom/metrics" >> ~/agent.sh
 echo "    mkdir ~/wptagent/custom/metrics" >> ~/agent.sh
 echo "    cp ~/custom-metrics/dist/*.js ~/wptagent/custom/metrics/" >> ~/agent.sh
+echo "    rm -rf ~/wptagent/custom/inject" >> ~/agent.sh
+echo "    mkdir ~/wptagent/custom/inject" >> ~/agent.sh
+echo "    cp ~/custom-metrics/inject-dist/*.js ~/wptagent/custom/inject/" >> ~/agent.sh
 
 # Update the agent
 echo "    cd ~/wptagent" >> ~/agent.sh
