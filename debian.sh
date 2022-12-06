@@ -29,7 +29,7 @@ sudo date
 echo "${USER} ALL=(ALL:ALL) NOPASSWD:ALL" | sudo tee "/etc/sudoers.d/wptagent"
 
 # Disable the ubuntu 22.04 prompt for restarting services
-sudo echo "\$nrconf{restart} = 'a'" >> /etc/needrestart/needrestart.conf
+echo "\$nrconf{restart} = 'a'" | sudo tee -a "/etc/needrestart/needrestart.conf" ||:
 
 cd ~
 until sudo apt -y update
