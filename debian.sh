@@ -111,7 +111,7 @@ sudo npm update -g
 #**************************************************************************************************
 sudo pip3 install --upgrade pip
 until sudo pip3 install dnspython monotonic pillow psutil requests tornado wsaccel brotli fonttools selenium future usbmuxwrapper \
-        google-api-core google-cloud-pubsub google-cloud-storage
+        google-api-core google-cloud-pubsub google-cloud-storage tzlocal
 do
     sleep 1
 done
