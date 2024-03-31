@@ -111,7 +111,7 @@ sudo npm update -g
 #**************************************************************************************************
 sudo pip3 install --upgrade pip
 until sudo pip3 install dnspython monotonic pillow psutil requests tornado wsaccel brotli fonttools selenium future usbmuxwrapper \
-        google-api-core google-cloud-pubsub google-cloud-storage pytz tzlocal
+        google-api-core google-cloud-pubsub google-cloud-storage pytz tzlocal greenstalk
 do
     sleep 1
 done
@@ -270,7 +270,7 @@ echo "    cd ~/wptagent" >> ~/agent.sh
 echo "    git pull --rebase origin haprod" >> ~/agent.sh
 
 # Agent invocation
-echo '    python3 wptagent.py -vvvv --pubsub "projects/httparchive/subscriptions/crawl-queue" --exit 60 --alive /tmp/wptagent' >> ~/agent.sh
+echo '    python3 wptagent.py -vvvv --beanstalk "10.128.0.3" --exit 60 --alive /tmp/wptagent' >> ~/agent.sh
 
 echo '    echo "Exited, restarting"' >> ~/agent.sh
 echo '    sleep 10' >> ~/agent.sh
