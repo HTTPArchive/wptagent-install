@@ -154,6 +154,9 @@ sudo mkdir --mode=755 /etc/systemd/journald.conf.d || true
 echo 'SystemMaxUse=1M' | sudo tee /etc/systemd/journald.conf.d/wptagent.conf
 sudo systemctl restart systemd-journald
 
+# Disable git background tasks
+git config --global maintenance.auto false
+
 # Reboot when out of memory
 cat << _SYSCTL_ | sudo tee /etc/sysctl.d/60-wptagent-dedicated.conf
 vm.panic_on_oom = 1
@@ -204,17 +207,22 @@ echo 'until sudo apt -y update' >> ~/firstrun.sh
 echo 'do' >> ~/firstrun.sh
 echo '    sleep 1' >> ~/firstrun.sh
 echo 'done' >> ~/firstrun.sh
+echo 'wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -' >> ~/firstrun.sh
 echo 'until sudo DEBIAN_FRONTEND=noninteractive apt install ca-certificates -yq' >> ~/firstrun.sh
 echo 'do' >> ~/firstrun.sh
 echo '    sleep 1' >> ~/firstrun.sh
 echo 'done' >> ~/firstrun.sh
 echo 'until sudo DEBIAN_FRONTEND=noninteractive apt -yq -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade' >> ~/firstrun.sh
 echo 'do' >> ~/firstrun.sh
+echo '    sudo apt -f install' >> ~/firstrun.sh
 echo '    sleep 1' >> ~/firstrun.sh
 echo 'done' >> ~/firstrun.sh
+echo 'sudo npm i -g lighthouse' >> ~/firstrun.sh
+
 echo 'rm ~/first.run' >> ~/firstrun.sh
 echo 'sudo reboot' >> ~/firstrun.sh
 chmod +x ~/firstrun.sh
+touch ~/first.run
 
 #**************************************************************************************************
 # Agent Script
@@ -226,33 +234,15 @@ echo '#!/bin/sh' > ~/agent.sh
 echo 'export DEBIAN_FRONTEND=noninteractive' >> ~/agent.sh
 echo 'cd ~/wptagent' >> ~/agent.sh
 
-# Wait for networking to become available and update the package list
+# Wait for networking to become available
 echo 'sleep 10' >> ~/agent.sh
-
-# Browser Certificates
-echo 'echo "Updating browser certificates"' >> ~/agent.sh
-echo 'wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -' >> ~/agent.sh
-
-# OS Update
-echo 'until sudo apt -y update' >> ~/agent.sh
-echo 'do' >> ~/agent.sh
-echo '    sleep 1' >> ~/agent.sh
-echo 'done' >> ~/agent.sh
-echo 'echo "Updating OS"' >> ~/agent.sh
-echo 'until sudo DEBIAN_FRONTEND=noninteractive apt -yq -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade' >> ~/agent.sh
-echo 'do' >> ~/agent.sh
-echo '    sudo apt -f install' >> ~/agent.sh
-echo '    sleep 1' >> ~/agent.sh
-echo 'done' >> ~/agent.sh
-
-# Lighthouse Update
-echo 'sudo npm i -g lighthouse' >> ~/agent.sh
 
 # Dummy X display
 echo 'export DISPLAY=:1' >> ~/agent.sh
 echo 'Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile /dev/null -config ./misc/xorg.conf :1 &' >> ~/agent.sh
 
-echo 'for i in `seq 1 24`' >> ~/agent.sh
+# Reboot every 3 hours
+echo 'for i in `seq 1 3`' >> ~/agent.sh
 echo 'do' >> ~/agent.sh
 
 # Update the custom metrics
@@ -276,20 +266,6 @@ echo '    echo "Exited, restarting"' >> ~/agent.sh
 echo '    sleep 10' >> ~/agent.sh
 echo 'done' >> ~/agent.sh
 
-# OS Update (again, just before reboot)
-echo 'until sudo apt -y update' >> ~/agent.sh
-echo 'do' >> ~/agent.sh
-echo '    sleep 1' >> ~/agent.sh
-echo 'done' >> ~/agent.sh
-echo 'echo "Updating OS"' >> ~/agent.sh
-echo 'until sudo DEBIAN_FRONTEND=noninteractive apt -yq -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade' >> ~/agent.sh
-echo 'do' >> ~/agent.sh
-echo '    sudo apt -f install' >> ~/agent.sh
-echo '    sleep 1' >> ~/agent.sh
-echo 'done' >> ~/agent.sh
-
-echo 'sudo apt -y autoremove' >> ~/agent.sh
-echo 'sudo apt clean' >> ~/agent.sh
 echo 'sudo reboot' >> ~/agent.sh
 
 chmod +x ~/agent.sh
@@ -306,4 +282,4 @@ sudo sed -i 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.
 sudo systemctl set-default multi-user
 
 echo
-echo "Install is complete.  Please reboot the system to start testing (sudo reboot)"
+echo "Install is complete.  Shut down the instance to create an image"
