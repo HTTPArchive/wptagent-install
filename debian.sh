@@ -37,6 +37,13 @@ do
     sleep 1
 done
 
+# Add the non-free repository for debian bookworm
+if [ -f /etc/debian_version ]; then
+    if (( $( printf "%.0f" $(cat /etc/debian_version)) >= 12 )); then
+        echo "deb http://deb.debian.org/debian bookworm contrib non-free" > /etc/apt/sources.list.d/contrib.list
+    fi
+fi
+
 # system config
 until sudo apt -y install git screen watchdog curl wget apt-transport-https xserver-xorg-video-dummy gnupg2
 do
