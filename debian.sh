@@ -40,7 +40,7 @@ done
 # Add the non-free repository for debian bookworm
 if [ -f /etc/debian_version ]; then
     if (( $( printf "%.0f" $(cat /etc/debian_version)) >= 12 )); then
-        echo "deb http://deb.debian.org/debian bookworm contrib non-free" > /etc/apt/sources.list.d/contrib.list
+        echo "deb http://deb.debian.org/debian bookworm contrib non-free" | sudo tee -a "/etc/apt/sources.list.d/contrib.list"
     fi
 fi
 
