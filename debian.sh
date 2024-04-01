@@ -248,8 +248,8 @@ echo 'sleep 10' >> ~/agent.sh
 echo 'export DISPLAY=:1' >> ~/agent.sh
 echo 'Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile /dev/null -config ./misc/xorg.conf :1 &' >> ~/agent.sh
 
-# Reboot every 3 hours
-echo 'for i in `seq 1 3`' >> ~/agent.sh
+# Reboot every 6 hours
+echo 'for i in `seq 1 6`' >> ~/agent.sh
 echo 'do' >> ~/agent.sh
 
 # Update the custom metrics
