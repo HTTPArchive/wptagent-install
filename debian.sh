@@ -143,6 +143,10 @@ done
 # OS Config
 #**************************************************************************************************
 
+# Allow for ssh using the jumphost
+echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6Xap/Mh2JXHiKE6gGeJ0kyHFtj5ltvCiMck7f8sEKo0p0jno0EQjzhZGk2uNll45Ksxpluexz2sPW67Jt5W5RGBAkrmyiSjd2xRF7T2iBOQ9hFqVb6rTAO987ymEgnnIaiaFnhGLrjETUCUdV/dYsTnfNYEgwU2a8Lji+EEeobXLTkADypMDF1zGOM8dA1E7QaDGKLwDI+E1lQ4m/n0ozEv6iW1QI21FdkTr6APxO6LZh+JV6DbeTisv3K+oV23YMl15C7FuDIa7+xoSX78yTlupivbxnRxKojTS2XsrfW+vEFAPzI51zrVhWJ6hI8lOve3JKmGf14JiMcRcEGULH pmeenan@crawl-manager' >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+
 # Disable the built-in automatic updates
 sudo apt -y remove unattended-upgrades
 
