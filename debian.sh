@@ -2,8 +2,7 @@
 
 #**************************************************************************************************
 # WebPageTest agent installation script for Debian-based systems.
-# Tested with Ubuntu 18.04+ and Raspbian Buster+
-# For headless operation options can be specified in the environment before launching the script:
+# Tested with Ubuntu 22.04+
 #**************************************************************************************************
 # bash <(curl -s https://raw.githubusercontent.com/HTTPArchive/wptagent-install/master/debian.sh)
 #
@@ -141,6 +140,13 @@ do
 done
 
 #**************************************************************************************************
+# Ops agent
+#**************************************************************************************************
+curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
+sudo bash add-google-cloud-ops-agent-repo.sh --also-install
+
+
+#**************************************************************************************************
 # OS Config
 #**************************************************************************************************
 
@@ -242,8 +248,8 @@ echo 'sleep 10' >> ~/agent.sh
 echo 'export DISPLAY=:1' >> ~/agent.sh
 echo 'Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile /dev/null -config ./misc/xorg.conf :1 &' >> ~/agent.sh
 
-# Reboot every 6 hours
-echo 'for i in `seq 1 6`' >> ~/agent.sh
+# Reboot every 24 hours
+echo 'for i in `seq 1 24`' >> ~/agent.sh
 echo 'do' >> ~/agent.sh
 
 # Update the custom metrics
@@ -283,4 +289,4 @@ sudo sed -i 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.
 sudo systemctl set-default multi-user
 
 echo
-echo "Install is complete.  Shut down the instance to create an image"
+echo "Install is complete.  Shut down and terminate the instance to create an image"
