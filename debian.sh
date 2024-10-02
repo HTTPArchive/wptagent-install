@@ -165,13 +165,6 @@ kernel.panic = 10
 net.ipv4.tcp_syn_retries = 4
 _SYSCTL_
 
-# disable IPv6
-cat << _SYSCTL_NO_IPV6_ | sudo tee /etc/sysctl.d/60-wptagent-no-ipv6.conf
-net.ipv6.conf.all.disable_ipv6 = 1
-net.ipv6.conf.default.disable_ipv6 = 1
-net.ipv6.conf.lo.disable_ipv6 = 1
-_SYSCTL_NO_IPV6_
-
 cat << _LIMITS_ | sudo tee /etc/security/limits.d/wptagent.conf
 # Limits increased for wptagent
 * soft nofile 250000
