@@ -83,7 +83,7 @@ until sudo apt -y install python3 python3-pip python3-ujson \
         python3-dev libavutil-dev libmp3lame-dev libx264-dev yasm autoconf automake build-essential libass-dev libfreetype6-dev libtheora-dev \
         libtool libvorbis-dev pkg-config texi2html libtext-unidecode-perl python3-numpy python3-scipy perl \
         adb ethtool nodejs cmake git-core libsdl2-dev libva-dev libvdpau-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev texinfo wget \
-        ttf-mscorefonts-installer fonts-noto fonts-roboto fonts-open-sans ffmpeg
+        ttf-mscorefonts-installer fonts-noto fonts-roboto fonts-open-sans ffmpeg upower
 do
     sleep 1
 done
@@ -234,6 +234,10 @@ echo 'sleep 10' >> ~/agent.sh
 # Dummy X display
 echo 'export DISPLAY=:1' >> ~/agent.sh
 echo 'Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile /dev/null -config ./misc/xorg.conf :1 &' >> ~/agent.sh
+echo 'sudo service dbus start' >> ~/agent.sh
+echo 'export XDG_RUNTIME_DIR=/run/user/$(id -u)' >> ~/agent.sh
+echo 'export DBUS_SESSION_BUS_ADDRESS=unix:path=$XDG_RUNTIME_DIR/bus' >> ~/agent.sh
+echo 'dbus-daemon --session --address=$DBUS_SESSION_BUS_ADDRESS --nofork --nopidfile --syslog-only &' >> ~/agent.sh
 
 # Reboot every 24 hours
 echo 'for i in `seq 1 24`' >> ~/agent.sh
