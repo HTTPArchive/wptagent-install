@@ -83,7 +83,7 @@ until sudo apt -y install python3 python3-pip python3-ujson \
         python3-dev libavutil-dev libmp3lame-dev libx264-dev yasm autoconf automake build-essential libass-dev libfreetype6-dev libtheora-dev \
         libtool libvorbis-dev pkg-config texi2html libtext-unidecode-perl python3-numpy python3-scipy perl \
         adb ethtool nodejs cmake git-core libsdl2-dev libva-dev libvdpau-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev texinfo wget \
-        ttf-mscorefonts-installer fonts-noto fonts-roboto fonts-open-sans ffmpeg
+        ttf-mscorefonts-installer fonts-noto fonts-roboto fonts-open-sans ffmpeg python3-pymemcache
 do
     sleep 1
 done
@@ -112,7 +112,7 @@ sudo pip3 install --upgrade pip
 until sudo pip3 install dnspython monotonic pillow psutil requests tornado wsaccel \
         brotli fonttools selenium future usbmuxwrapper \
         google-api-core google-cloud-pubsub google-cloud-storage google-cloud-bigquery \
-        google-cloud-bigquery-storage pytz tzlocal greenstalk pymemcache
+        google-cloud-bigquery-storage pytz tzlocal greenstalk
 do
     sleep 1
 done
