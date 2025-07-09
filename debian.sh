@@ -73,7 +73,7 @@ cp ~/custom-metrics/inject-dist/*.js ~/wptagent/custom/inject/ ||:
 #**************************************************************************************************
 
 # Node JS
-curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_24.x | sudo -E bash -
 
 # Agent dependencies
 echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
