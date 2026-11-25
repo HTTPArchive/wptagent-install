@@ -89,16 +89,19 @@ do
 done
 
 # ImageMagick
+echo "Installing ImageMagick..."
 git clone https://github.com/SoftCreatR/imei
 cd imei
 chmod +x imei.sh
 sudo ./imei.sh
 cd ~
 
+echo "Rebuilding font cache..."
 sudo dbus-uuidgen --ensure
 sudo fc-cache -f -v
 
 # Lighthouse
+echo "Installing Lighthouse..."
 until sudo npm install -g lighthouse
 do
     sleep 1
@@ -108,6 +111,7 @@ sudo npm update -g
 #**************************************************************************************************
 # Python Modules
 #**************************************************************************************************
+echo "Installing Python modules..."
 until sudo pip3 install --break-system-packages --ignore-installed dnspython monotonic pillow psutil requests tornado wsaccel \
         brotli fonttools selenium future usbmuxwrapper \
         google-api-core google-cloud-pubsub google-cloud-storage google-cloud-bigquery \
@@ -119,6 +123,7 @@ done
 #**************************************************************************************************
 # Exiftool (latest from source)
 #**************************************************************************************************
+echo "Installing Exiftool..."
 git clone https://github.com/exiftool/exiftool.git ~/exiftool
 cd ~/exiftool
 perl Makefile.PL
@@ -128,6 +133,7 @@ cd ~
 #**************************************************************************************************
 # Browser Install
 #**************************************************************************************************
+echo "Installing Chrome..."
 wget "https://dl.google.com/linux/direct/google-chrome-stable_current_$(dpkg --print-architecture).deb"
 sudo apt -yq install "./google-chrome-stable_current_$(dpkg --print-architecture).deb"
 rm "./google-chrome-stable_current_$(dpkg --print-architecture).deb"
