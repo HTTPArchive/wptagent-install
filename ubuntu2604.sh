@@ -185,7 +185,7 @@ echo '#!/bin/bash' > ~/startup.sh
 echo "PATH=$PWD/bin:$PWD/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin" >> ~/startup.sh
 echo 'sudo DEBIAN_FRONTEND=noninteractive apt update -yq' >> ~/startup.sh
 echo 'sudo DEBIAN_FRONTEND=noninteractive apt install ca-certificates -yq' >> ~/startup.sh
-echo 'IFACE=$(ip route show default | awk '/default/ {print $5; exit}')' >> ~/startup.sh
+echo 'IFACE=$(ip route show default | awk '\''/default/ {print $5; exit}'\'')' >> ~/startup.sh
 echo 'sudo ethtool -K "$IFACE" gro off' >> ~/startup.sh
 echo 'sudo ethtool -K "$IFACE" rx-gro-hw off' >> ~/startup.sh
 echo 'cd ~' >> ~/startup.sh
