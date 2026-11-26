@@ -83,7 +83,8 @@ until sudo apt -y install python3 python3-pip python3-ujson \
         python3-dev libavutil-dev libmp3lame-dev libx264-dev yasm autoconf automake build-essential libass-dev libfreetype6-dev libtheora-dev \
         libtool libvorbis-dev pkg-config texi2html libtext-unidecode-perl python3-numpy python3-scipy perl \
         adb ethtool nodejs cmake git-core libsdl2-dev libva-dev libvdpau-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev texinfo wget \
-        ttf-mscorefonts-installer fonts-noto fonts-roboto fonts-open-sans ffmpeg python3-pymemcache cron xserver-xorg-legacy nano
+        ttf-mscorefonts-installer fonts-noto fonts-roboto fonts-open-sans ffmpeg python3-pymemcache cron xserver-xorg-legacy nano \
+        python3-venv
 do
     sleep 1
 done
@@ -112,13 +113,17 @@ sudo npm update -g
 # Python Modules
 #**************************************************************************************************
 echo "Installing Python modules..."
-until sudo pip3 install --break-system-packages --ignore-installed dnspython monotonic pillow psutil requests tornado wsaccel \
+cd ~
+python3 -m venv .venv
+source ~/.venv/bin/activate
+until pip3 install --ignore-installed dnspython monotonic pillow psutil requests tornado wsaccel \
         brotli fonttools selenium future usbmuxwrapper \
         google-api-core google-cloud-pubsub google-cloud-storage google-cloud-bigquery \
         google-cloud-bigquery-storage pytz tzlocal greenstalk
 do
     sleep 1
 done
+pip3 install --upgrade pyopenssl
 
 #**************************************************************************************************
 # Exiftool (latest from source)
@@ -176,10 +181,13 @@ echo "test-binary = $PWD/wptagent/alive3.sh" | sudo tee -a /etc/watchdog.conf
 #**************************************************************************************************
 # Startup Script
 #**************************************************************************************************
-echo '#!/bin/sh' > ~/startup.sh
+echo '#!/bin/bash' > ~/startup.sh
 echo "PATH=$PWD/bin:$PWD/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin" >> ~/startup.sh
 echo 'sudo DEBIAN_FRONTEND=noninteractive apt update -yq' >> ~/startup.sh
 echo 'sudo DEBIAN_FRONTEND=noninteractive apt install ca-certificates -yq' >> ~/startup.sh
+echo 'IFACE=$(ip route show default | awk '/default/ {print $5; exit}')' >> ~/startup.sh
+echo 'sudo ethtool -K "$IFACE" gro off' >> ~/startup.sh
+echo 'sudo ethtool -K "$IFACE" rx-gro-hw off' >> ~/startup.sh
 echo 'cd ~' >> ~/startup.sh
 echo 'if [ -e first.run ]' >> ~/startup.sh
 echo 'then' >> ~/startup.sh
@@ -193,7 +201,7 @@ chmod +x ~/startup.sh
 #**************************************************************************************************
 # First-run Script (reboot the first time after starting if ~/first.run file exists)
 #**************************************************************************************************
-echo '#!/bin/sh' > ~/firstrun.sh
+echo '#!/bin/bash' > ~/firstrun.sh
 echo 'cd ~' >> ~/firstrun.sh
 echo 'until sudo apt -y update' >> ~/firstrun.sh
 echo 'do' >> ~/firstrun.sh
@@ -216,7 +224,9 @@ touch ~/first.run
 #**************************************************************************************************
 
 # build the agent script
-echo '#!/bin/sh' > ~/agent.sh
+echo '#!/bin/bash' > ~/agent.sh
+
+echo 'source ~/.venv/bin/activate' >> ~/agent.sh
 
 echo 'export DEBIAN_FRONTEND=noninteractive' >> ~/agent.sh
 echo 'cd ~/wptagent' >> ~/agent.sh
